@@ -1,0 +1,15 @@
+{
+  "pythonVersion": "3.11",
+  "venvPath": ".",
+  "venv": "venv",
+  "include": ["backend", "ml"],
+  "exclude": ["**/node_modules", "**/__pycache__", "venv"],
+  "executionEnvironments": [
+    {
+      "root": ".",
+      "extraPaths": ["."]
+    }
+  ],
+  "reportMissingImports": "warning",
+  "reportMissingModuleSource": "none"
+}
