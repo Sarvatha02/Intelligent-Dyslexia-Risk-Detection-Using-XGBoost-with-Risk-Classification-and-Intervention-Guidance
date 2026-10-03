@@ -1,122 +1,234 @@
-# 🧠 Intelligent Dyslexia Risk Detection System
+# Intelligent Dyslexia Risk Detection System
 
-An end-to-end AI/ML web application that detects dyslexia risk using XGBoost with level classification (Normal, Mild, Moderate, Severe) and personalized intervention guidance.
+An AI-powered web application for assessing dyslexia-related risk indicators using machine learning, interactive assessments, and behavioral signals.
 
----
+## Features
 
-## 🏗️ Project Structure
+* User registration and authentication
+* Student profile management
+* Age-based assessment activities
+* Reading and spelling assessment
+* Phonological and memory assessment
+* Visual and behavioral assessment
+* XGBoost-based risk classification
+* Risk level and confidence prediction
+* Personalized intervention guidance
+* Assessment history
+* Supabase database integration
+* REST API using FastAPI
+* Interactive React frontend
 
+## Tech Stack
+
+### Frontend
+
+* React.js
+* Vite
+* Tailwind CSS
+* React Router
+* Axios
+* MediaPipe
+
+### Backend
+
+* Python
+* FastAPI
+* Uvicorn
+* Pydantic
+
+### Machine Learning
+
+* XGBoost
+* Scikit-learn
+* Pandas
+* NumPy
+
+### Database
+
+* Supabase
+* PostgreSQL
+
+## System Architecture
+
+```text
+React.js Frontend
+       |
+       | REST API
+       v
+FastAPI Backend
+       |
+       +------------------+
+       |                  |
+       v                  v
+XGBoost Model          Supabase
+       |               PostgreSQL
+       v
+Risk Classification
+       |
+       v
+Intervention Guidance
 ```
+
+## Machine Learning
+
+The system uses an XGBoost classification model to analyze assessment features such as:
+
+* Reading speed
+* Reading accuracy
+* Spelling performance
+* Phonological performance
+* Memory performance
+* Visual confusion
+* Writing errors
+* Response-time variation
+* Eye-tracking-related indicators
+
+The model classifies assessment results into four risk levels:
+
+```text
+0 → Normal
+1 → Mild
+2 → Moderate
+3 → Severe
+```
+
+## Project Structure
+
+```text
 Dyslexia/
-├── backend/          # FastAPI backend
-│   ├── main.py       # API routes
-│   ├── database.py   # Supabase client
-│   ├── schemas.py    # Pydantic models
-│   ├── model_loader.py # XGBoost prediction
-│   └── .env          # Supabase credentials
-├── frontend/         # React + Vite + Tailwind v4
+├── backend/
+│   ├── main.py
+│   ├── database.py
+│   ├── model_loader.py
+│   ├── schemas.py
+│   └── content_library.py
+│
+├── frontend/
 │   ├── src/
-│   │   ├── pages/    # Auth, Home, Profile, Assessment, Results
-│   │   ├── api/      # Axios API client
-│   │   └── context/  # AuthContext
-│   └── .env          # VITE_API_URL
+│   │   ├── api/
+│   │   ├── context/
+│   │   ├── pages/
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│   └── package.json
+│
 ├── ml/
-│   ├── generate_data.py   # Synthetic dataset (1500 samples)
-│   ├── train_model.py     # XGBoost training
-│   ├── dyslexia_data.csv  # Generated dataset
-│   └── model.pkl          # Trained model
+│   ├── dyslexia_data.csv
+│   ├── generate_data.py
+│   ├── train_model.py
+│   ├── evaluate_model.py
+│   ├── eda_analysis.py
+│   └── model.pkl
+│
 ├── supabase/
-│   └── schema.sql         # PostgreSQL schema
-└── requirements.txt
+│   └── schema.sql
+│
+└── README.md
 ```
 
----
+## Installation
 
-## ⚙️ Setup Instructions
+### Clone the Repository
 
-### 1. Supabase Setup
-
-1. Go to [https://supabase.com](https://supabase.com) and create a new project.
-2. In the **SQL Editor**, run the contents of `supabase/schema.sql`.
-3. Copy your **Project URL** and **anon public key** from Project Settings → API.
-
-### 2. Backend Setup
-
-```powershell
-# From the project root
-pip install -r requirements.txt
-
-# Set your Supabase credentials in backend/.env:
-# SUPABASE_URL=https://your-project.supabase.co
-# SUPABASE_ANON_KEY=your-anon-key
-
-# Run the backend
-python -m uvicorn backend.main:app --reload --host 0.0.0.0 --port 8000
+```bash
+git clone https://github.com/Sarvatha02/Dyslexia.git
+cd Dyslexia
 ```
 
-### 3. ML Model (already done, optional re-train)
+### Backend
 
-```powershell
-python ml/generate_data.py   # Regenerate 1500 samples
-python ml/train_model.py     # Retrain the XGBoost model
+Create a virtual environment:
+
+```bash
+python -m venv venv
 ```
 
-### 4. Frontend Setup
+Activate it on Windows:
 
-```powershell
+```bash
+venv\Scripts\activate
+```
+
+Install dependencies:
+
+```bash
+pip install fastapi uvicorn pandas numpy scikit-learn xgboost supabase python-dotenv
+```
+
+### Environment Variables
+
+Create:
+
+```text
+backend/.env
+```
+
+Add:
+
+```env
+SUPABASE_URL=your_supabase_url
+SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
+### Run Backend
+
+```bash
+python -m backend.main
+```
+
+Backend:
+
+```text
+http://127.0.0.1:8000
+```
+
+API documentation:
+
+```text
+http://127.0.0.1:8000/docs
+```
+
+### Frontend
+
+```bash
 cd frontend
 npm install
 npm run dev
 ```
 
-Then open [http://localhost:5173](http://localhost:5173) in your browser.
+## Model Training
 
----
+To generate the dataset:
 
-## 🚀 Usage Flow
+```bash
+python ml/generate_data.py
+```
 
-1. **Sign up / Log in** at the home page
-2. **Create a student profile** (name, age, grade)
-3. **Complete the 6-part assessment**:
-   - 📖 Reading Test (speed + accuracy)
-   - 🔤 Spelling Test
-   - 🔁 Letter Confusion Test (b/d/p/q)
-   - 🗣️ Phonological Awareness Test
-   - 🧠 Memory Recall Test
-   - ✍️ Writing Error Test
-4. **View Results**: risk level, confidence score, score breakdown, intervention guidance
-5. **Track history** on the dashboard
+To train the model:
 
----
+```bash
+python ml/train_model.py
+```
 
-## 📊 ML Model
+To evaluate the model:
 
-- **Algorithm**: XGBoost Classifier (multi:softprob)
-- **Classes**: 0=Normal, 1=Mild, 2=Moderate, 3=Severe
-- **Features**: reading_speed, reading_accuracy, spelling_score, phonological_score, memory_score, confusion_score, writing_error_rate, response_time_variance
-- **Dataset**: 1500 balanced synthetic samples
-- **Accuracy**: ~94% on test split (realistic, not inflated)
+```bash
+python ml/evaluate_model.py
+```
 
----
+The trained model is saved as:
 
-## 🔗 API Endpoints
+```text
+ml/model.pkl
+```
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/signup` | Create user account |
-| POST | `/login` | Authenticate user |
-| POST | `/student?user_id={id}` | Create student profile |
-| POST | `/predict` | Run XGBoost prediction |
-| GET | `/history/{student_id}` | Get test history |
+## Database
 
----
+The database schema is available in:
 
-## 🛡️ Tech Stack
+```text
+supabase/schema.sql
+```
 
-| Layer | Technology |
-|-------|-----------|
-| Frontend | React 19, Vite 8, Tailwind CSS v4 |
-| Backend | FastAPI, Uvicorn |
-| ML | XGBoost, scikit-learn, pandas, numpy |
-| Database | Supabase (PostgreSQL) |
-| Auth | Custom (email + password via Supabase) |
+The application uses Supabase PostgreSQL for storing student profiles and assessment results.
+
